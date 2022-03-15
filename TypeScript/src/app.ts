@@ -17,7 +17,7 @@ type MergeType =  Product | Product2
 const a:number = 20;
 const Name: string = "Dyy";
 const myObj : { id: number, price: number} = {id :1 , price: 200}
-const myArr : string[] = ["Dyy" , "vfgs"]
+const myArr : string[] = ["Dyy" , "P"]
 const myArrNum : number[] = [1,2,3,4,5,6]
 const myArrOb: MergeType[] = [
     {id: 1 , name: "Dyy" , price : 200},
