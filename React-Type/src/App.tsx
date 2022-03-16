@@ -1,66 +1,47 @@
-// import { useState } from 'react'
-// import logo from './logo.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>Hello Vite + React!</p>
-//         <p>
-//           <button type="button" onClick={() => setCount((count) => count + 1)}>
-//             count is: {count}
-//           </button>
-//         </p>
-//         <p>
-//           Edit <code>App.tsx</code> and save to test HMR updates.
-//         </p>
-//         <p>
-//           <a
-//             className="App-link"
-//             href="https://reactjs.org"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             Learn React
-//           </a>
-//           {' | '}
-//           <a
-//             className="App-link"
-//             href="https://vitejs.dev/guide/features.html"
-//             target="_blank"
-//             rel="noopener noreferrer"
-//           >
-//             Vite Docs
-//           </a>
-//         </p>
-//       </header>
-//     </div>
-//   )
-// }
-
-// export default App
-
-import React, { useState } from 'react'
+import { useEffect, useState } from 'react'
+import logo from './logo.svg'
+import './App.css'
 import ShowInfo from './components/ShowInfor'
 
+import type { Product } from './types/product';
+import { list } from './api/product';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/Website/HomePage';
+import ProductPage from './pages/Website/ProductPage';
 
-const App = () => {
-  const [count, setCount ] = useState<number>(0);
-  const [ info, setInfo] = useState<{name: string, age:number }>({
-    name: "Duyyy",
-    age: 20
-  });
+function App() {
+  const [products, setProducts] = useState<{_id: number, name: string}[]>([])
+
+  useEffect(() => {
+    const getProducts = async () => {
+        const { data } = await list();
+        setProducts(data);
+    }
+    getProducts();
+  })
   return (
-    <div className="App"> 
-    <h1>Dyyy<ShowInfo person={info} /></h1>
-
-    {count} <button onClick={() => setCount(count + 1)}> Upp!!! </button>
+    <div className="App">
+        <header>
+          <ul>
+            <li><NavLink to="/">Home Page</NavLink></li>
+            <li><NavLink to="/product">Product</NavLink></li>
+            <li><NavLink to="/about">About</NavLink></li>
+          </ul>
+        </header>
+        <main>
+          <Routes>
+            <Route path='/' element={<HomePage />}>
+              
+            </Route>
+            <Route path="/" element={<HomePage />}/>
+            <Route path="product" element={<ProductPage />}/>
+            <Route path="about" element={<h1>About page</h1>}/>
+          </Routes>
+        </main>
     </div>
   )
 }
 
 export default App
+
+
