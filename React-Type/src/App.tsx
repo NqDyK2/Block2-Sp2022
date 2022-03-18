@@ -3,8 +3,8 @@ import logo from './logo.svg'
 import './App.css'
 import ShowInfo from './components/ShowInfor'
 
-import type { Product } from './types/product';
-import { list } from './api/product';
+import type { ProductType } from './types/product';
+import { add, list } from './api/product';
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import ProductPage from './pages/ProductPage';
 import ProductDetail from './pages/ProductDetail';
@@ -12,11 +12,13 @@ import AdminLayout from './pages/layouts/AdminLayout';
 import Dashboard from './pages/Dashboard';
 import HomePage from './pages/HomePage';
 import WebsiteLayout from './pages/layouts/WebsiteLayout';
+import ProductAdd from './pages/ProductAdd';
+import ProductManager from './pages/ProductManager';
 // import HomePage from './pages/Website/HomePage';
 // import ProductPage from './pages/Website/ProductPage';
 
 function App() {
-  const [products, setProducts] = useState<{_id: number, name: string}[]>([])
+  const [products, setProducts] = useState<ProductType[]>([])
 
   useEffect(() => {
     const getProducts = async () => {
@@ -24,7 +26,14 @@ function App() {
         setProducts(data);
     }
     getProducts();
-  })
+  }, [])
+  
+  const onHandleAdd = async (product: any) => {
+    console.log("App.js : ", product);
+    const {data} = await add(product);
+    setProducts([...products, data]);
+  }
+
   return (
     <div className="App">
         <header>
@@ -50,6 +59,10 @@ function App() {
             <Route path="admin" element={<AdminLayout />}>
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path="dashboard" element={<Dashboard />} />
+                <Route path="product">
+                  <Route index  element={<ProductManager products={products} />} />
+                  <Route path="add" element={<ProductAdd name="Dyy" onAdd={onHandleAdd} />} />
+                </Route>
             </Route>
           </Routes>
         </main>
