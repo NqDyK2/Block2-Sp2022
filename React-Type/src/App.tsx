@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState  } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import ShowInfo from './components/ShowInfor'
+import "@material-tailwind/react/tailwind.css";
+
 
 import type { Product } from './types/product';
 import { list } from './api/product';
-import { NavLink, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/Website/HomePage';
-import ProductPage from './pages/Website/ProductPage';
+import { NavLink, Route, Routes, Switch, Route, Redirect} from 'react-router-dom';
+import Landing from './pages/Landing';
+import Profile from './pages/Profile';
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   const [products, setProducts] = useState<{_id: number, name: string}[]>([])
@@ -21,23 +24,13 @@ function App() {
   })
   return (
     <div className="App">
-        <header>
-          <ul>
-            <li><NavLink to="/">Home Page</NavLink></li>
-            <li><NavLink to="/product">Product</NavLink></li>
-            <li><NavLink to="/about">About</NavLink></li>
-          </ul>
-        </header>
-        <main>
-          <Routes>
-            <Route path='/' element={<HomePage />}>
-              
-            </Route>
-            <Route path="/" element={<HomePage />}/>
-            <Route path="product" element={<ProductPage />}/>
-            <Route path="about" element={<h1>About page</h1>}/>
-          </Routes>
-        </main>
+      <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Redirect from="*" to="/" />
+        </Switch>
     </div>
   )
 }
