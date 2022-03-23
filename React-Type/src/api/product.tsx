@@ -8,11 +8,15 @@ export const  add = (product: any) => {
     const url = `/product`;
     return instance.post(url,product)
 }
-export const get = (_id : any ) => {
-    const url = `/product/${_id}`;
+export const get = ( id : number ) => {
+    const url = `/product/${id}`;
     return instance.get(url);
 }
-export const remove = (_id : number ) => {
-    const url = `/product/${_id}`;
+export const remove = (id : number ) => {
+    const url = `/product/${id}`;
     return instance.delete(url);
+}
+export const update = (product: any) => {
+    const url = `/product/${product.id}`;
+    return instance.patch(url , product)
 }
