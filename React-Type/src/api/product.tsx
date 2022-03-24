@@ -4,19 +4,19 @@ export const list = () => {
     const url = `/products`;
     return instance.get(url)
 }
-export const  add = (product: any) => {
-    const url = `/product`;
-    return instance.post(url,product)
+export const add = (product: any) => {
+    const url = `/products`;
+    return instance.post(url, product);
 }
-export const get = ( id : number ) => {
-    const url = `/product/${id}`;
-    return instance.get(url);
-}
-export const remove = (id : number ) => {
-    const url = `/product/${id}`;
+export const remove = (id: any) => {
+    const url = `/products/${id}`;
     return instance.delete(url);
 }
+export const read = (id: any) => {
+    const url = `/products/${id}`;
+    return instance.get(url);
+}
 export const update = (product: any) => {
-    const url = `/product/${product.id}`;
-    return instance.patch(url , product)
+    const url = `/products/${product.id}`;
+    return instance.put(url, product);
 }

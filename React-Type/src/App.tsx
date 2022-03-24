@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
+import ShowInfo from './components/ShowInfo'
 
 import type { ProductType } from './types/product';
 import { add, list, remove, update } from './api/product';
@@ -36,10 +37,13 @@ function App() {
     // rerender
     setProducts(products.filter(item => item.id !== id));
   }
-  const onHandleUpdate = async (product:ProductType) => {
+  const onHandleUpdate = async (product: ProductType) => {
     try {
-      const {data} = await update(product);
-      setProducts(products.map(item => item.id === data.id ? product: item))
+      // api
+       const {data} = await update(product);
+       // reREnder - 
+       // Tạo ra 1 vòng lặp, nếu item.id == id sản phẩm vừa cập nhật (data), thì cập nhật ngược lại giữ nguyên
+       setProducts(products.map(item => item.id === data.id ? product : item))
     } catch (error) {
       
     }
@@ -67,7 +71,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="product">
                   <Route index  element={<ProductManager products={products} onRemove={onHandleRemove} />} />
-                  <Route path=":id/edit" element={<ProductEdit onUpdate={onHandleUpdate} />} />
+                  <Route path=":id/edit" element={<ProductEdit onUpdate={onHandleUpdate}/>} />
                   <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
                 </Route>
             </Route>
@@ -78,5 +82,6 @@ function App() {
 }
 
 export default App
+
 
 
