@@ -1,3 +1,67 @@
 {
-  "products": []
+  "products": [
+    {
+      "id": 1,
+      "name": "Product A",
+      "price": 200
+    },
+    {
+      "id": 2,
+      "name": "Product B",
+      "price": 300
+    },
+    {
+      "id": 3,
+      "name": "Product C",
+      "price": 400
+    },
+    {
+      "id": 4,
+      "name": "Product D",
+      "price": 500
+    },
+    {
+      "id": 5,
+      "name": "Product E",
+      "price": 164
+    },
+    {
+      "id": 6,
+      "name": "Product F",
+      "price": 572
+    },
+    {
+      "id": 7,
+      "name": "Product G",
+      "price": 357
+    },
+    {
+      "id": 8,
+      "name": "Product H",
+      "price": 864
+    },
+    {
+      "id": 9,
+      "name": "Product I",
+      "price": 136
+    },
+    {
+      "id": 10,
+      "name": "Product J",
+      "price": 862
+    },
+    {
+      "id": 11,
+      "name": "Product K",
+      "price": 643
+    }
+  ],
+  "users": [
+    {
+      "email": "duynqph16692@fpt.edu.vn",
+      "password": "$2a$10$BngRxfcSWp.P7KqD3XQvUe9uWZGANFtd2m4nVYdn/x4tCKvpk4lFe",
+      "name": "Nguyễn Quý Duy",
+      "id": 1
+    }
+  ]
 }

@@ -4,7 +4,12 @@ type Props = {}
 
 const Signin = (props: Props) => {
   return (
-    <div>Signin</div>
+    <div>
+      <form action="">
+        <input type="text" placeholder='Email' />
+        <input type="text" placeholder='PassWord' />
+      </form>
+    </div>
   )
 }
 

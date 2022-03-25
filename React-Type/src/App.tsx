@@ -5,6 +5,7 @@ import ShowInfo from './components/ShowInfo'
 
 import type { ProductType } from './types/product';
 import { add, list, remove, update } from './api/product';
+import { regis } from './api/user'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -15,9 +16,14 @@ import ProductManager from './pages/ProductManager';
 import ProductDetail from './pages/ProductDetail';
 import ProductAdd from './pages/ProductAdd';
 import ProductEdit from './pages/ProductEdit';
+import PrivateRouter from './components/PrivateRouter';
+import Signin from './pages/Signin';
+import Signup from './pages/Signup';
+import { UserType } from './types/user';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([])
+  const [users, setUser] = useState<UserType[]>([])
 
   useEffect(() => {
     const getProducts = async () => {
@@ -31,6 +37,13 @@ function App() {
   const onHandleAdd = async (product: any) => {
     const {data} = await add(product);
     setProducts([...products, data]);
+  }
+  //Registed Account 
+  const onHanleRegisted = async(user:any) => {
+    const {data} = await regis(user);
+    // setUser([...users, data])
+    console.log(user);
+    
   }
   const onHandleRemove = async (id: number) => {
     remove(id);
@@ -50,13 +63,13 @@ function App() {
   }
   return (
     <div className="App">
-        <header>
+        {/* <header>
           <ul>
             <li><NavLink to="/">Home Page</NavLink></li>
             <li><NavLink to="/product">Product</NavLink></li>
             <li><NavLink to="/about">About</NavLink></li>
           </ul>
-        </header>
+        </header> */}
         <main>
           <Routes>
             <Route path="/" element={<WebsiteLayout />}>
@@ -65,8 +78,8 @@ function App() {
                   <Route index element={<ProductPage/>}/>
                   <Route path=":id" element={<ProductDetail />} />
                 </Route>
-            </Route>'
-            <Route path="admin" element={<AdminLayout />}>
+            </Route>
+            <Route path="admin" element={ <PrivateRouter><AdminLayout /></PrivateRouter>}>
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="product">
@@ -75,6 +88,8 @@ function App() {
                   <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
                 </Route>
             </Route>
+            <Route path='login' element={<Signin />}></Route>
+            <Route path='register' element={<Signup onRegisted={onHanleRegisted} />} /> 
           </Routes>
         </main>
     </div>
