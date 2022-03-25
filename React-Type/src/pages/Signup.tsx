@@ -5,6 +5,7 @@ type Inputs = {
   name: string,
   email: string,
   password: string,
+  role: "0"
 }
 type RegisterProps = {
   onRegisted: (users: Inputs) => void

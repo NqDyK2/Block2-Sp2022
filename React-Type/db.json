@@ -62,6 +62,12 @@
       "password": "$2a$10$BngRxfcSWp.P7KqD3XQvUe9uWZGANFtd2m4nVYdn/x4tCKvpk4lFe",
       "name": "Nguyễn Quý Duy",
       "id": 1
+    },
+    {
+      "email": "nguyenquyduyabc@gmail.com",
+      "password": "$2a$10$rXqH/WomrWXD01mzhtQdPewID3Oh/CRSwblmg6cL12IHSZV/IwqyW",
+      "name": "NqDyy",
+      "id": 2
     }
   ]
 }
