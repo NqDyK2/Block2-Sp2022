@@ -5,7 +5,7 @@ import ShowInfo from './components/ShowInfo'
 
 import type { ProductType } from './types/product';
 import { add, list, remove, update } from './api/product';
-import { regis } from './api/user'
+import { login, regis } from './api/user'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -45,6 +45,15 @@ function App() {
     console.log(user);
     
   }
+  //Login Account 
+
+  
+  const onHandleLogin = async ( user:any) => {
+    const {data} = await login(user);
+    console.log(user);
+  }
+
+
   const onHandleRemove = async (id: number) => {
     remove(id);
     // rerender
@@ -88,7 +97,7 @@ function App() {
                   <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
                 </Route>
             </Route>
-            <Route path='login' element={<Signin />}></Route>
+            <Route path='login' element={<Signin  onLogin={onHandleLogin}/>}></Route>
             <Route path='register' element={<Signup onRegisted={onHanleRegisted} />} /> 
           </Routes>
         </main>

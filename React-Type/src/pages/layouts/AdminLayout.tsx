@@ -1,11 +1,12 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import "../../bgc.css"
 
 type Props = {}
 
 const AdminLayout = (props: Props) => {
     return (
-        <div>
+        <div className='bgc-dashboard'>
             <header >
                 Admin
             </header>

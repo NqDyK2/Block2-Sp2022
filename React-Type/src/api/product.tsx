@@ -1,7 +1,7 @@
 import instance from './instance';
 
 export const list = () => {
-    const url = `/products`;
+    const url = `http://localhost:3001/products`;
     return instance.get(url)
 }
 export const add = (product: any) => {
