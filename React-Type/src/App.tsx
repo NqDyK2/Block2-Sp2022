@@ -54,18 +54,18 @@ function App() {
   }
 
 
-  const onHandleRemove = async (id: number) => {
-    remove(id);
+  const onHandleRemove = async (_id: number) => {
+    remove(_id);
     // rerender
-    setProducts(products.filter(item => item.id !== id));
+    setProducts(products.filter(item => item._id !== _id));
   }
   const onHandleUpdate = async (product: ProductType) => {
     try {
       // api
        const {data} = await update(product);
        // reREnder - 
-       // Tạo ra 1 vòng lặp, nếu item.id == id sản phẩm vừa cập nhật (data), thì cập nhật ngược lại giữ nguyên
-       setProducts(products.map(item => item.id === data.id ? product : item))
+       // Tạo ra 1 vòng lặp, nếu item._id == _id sản phẩm vừa cập nhật (data), thì cập nhật ngược lại giữ nguyên
+       setProducts(products.map(item => item._id === data._id ? product : item))
     } catch (error) {
       
     }
@@ -85,20 +85,20 @@ function App() {
                 <Route index element={<HomePage />} />
                 <Route path="product">
                   <Route index element={<ProductPage/>}/>
-                  <Route path=":id" element={<ProductDetail />} />
+                  <Route path=":_id" element={<ProductDetail />} />
                 </Route>
             </Route>
             <Route path="admin" element={ <PrivateRouter><AdminLayout /></PrivateRouter>}>
                 <Route index element={<Navigate to="dashboard" />} />
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="product">
-                  <Route index  element={<ProductManager products={products} onRemove={onHandleRemove} />} />
-                  <Route path=":id/edit" element={<ProductEdit onUpdate={onHandleUpdate}/>} />
+                  <Route index  element={<PrivateRouter><ProductManager products={products} onRemove={onHandleRemove} /></PrivateRouter>} />
+                  <Route path=":_id/edit" element={<ProductEdit onUpdate={onHandleUpdate}/>} />
                   <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
                 </Route>
             </Route>
-            <Route path='login' element={<Signin  onLogin={onHandleLogin}/>}></Route>
-            <Route path='register' element={<Signup onRegisted={onHanleRegisted} />} /> 
+            <Route path='login' element={<Signin  />}></Route>
+            <Route path='register' element={<Signup />} /> 
           </Routes>
         </main>
     </div>

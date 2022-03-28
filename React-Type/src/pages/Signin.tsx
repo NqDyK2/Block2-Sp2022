@@ -1,13 +1,29 @@
 import React from 'react'
 import { UserType } from '../types/user'
 import { LockClosedIcon } from '@heroicons/react/solid'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../api/user'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { authenticated } from '../utils/localStorage'
 
 
-type LoginProps = {
-  onLogin: (user:UserType) => void
+type TypeInputs={
+  email:string,
+  password: string
 }
 
-const Signin = (props: LoginProps) => {
+const Signin = () => {
+  const {register , handleSubmit , formState:{errors}} = useForm<TypeInputs>();
+  const navigate = useNavigate();
+  const onSubmit: SubmitHandler<TypeInputs> = async data => {
+    const {data : user} = await login(data);
+    console.log(user);
+    // localstorage
+    authenticated(user, () => {
+        navigate('/');
+    })
+}
+
   return (
     <>
     {/*
@@ -34,7 +50,7 @@ const Signin = (props: LoginProps) => {
             </a>
           </p>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" action="" method="POST" onSubmit={handleSubmit(onSubmit)}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -43,7 +59,7 @@ const Signin = (props: LoginProps) => {
               </label>
               <input
                 id="email-address"
-                name="email"
+                {...register('email')}
                 type="email"
                 autoComplete="email"
                 required
@@ -57,7 +73,7 @@ const Signin = (props: LoginProps) => {
               </label>
               <input
                 id="password"
-                name="password"
+                {...register('password')}
                 type="password"
                 autoComplete="current-password"
                 required

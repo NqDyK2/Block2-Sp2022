@@ -14,12 +14,12 @@ type FormInputs = {
 
 const ProductEdit = (props: ProductEditProps) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<FormInputs>();
-    const { id } = useParams();
+    const { _id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const getProduct = async () => {
-            const { data } = await read(id);
+            const { data } = await read(_id);
             reset(data);
         }
         getProduct();

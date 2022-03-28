@@ -1,21 +1,19 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
+import { regis} from "../api/user"
 
 type Inputs = {
   name: string,
   email: string,
   password: string,
-  role: "0"
-}
-type RegisterProps = {
-  onRegisted: (users: Inputs) => void
 }
 
-const Signup = (props: RegisterProps) => {
+
+const Signup = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
   const navigate = useNavigate()
   const onSubmit: SubmitHandler<Inputs> = (dataInput) => {
-    props.onRegisted(dataInput)
+    regis(dataInput)
     // console.log(dataInput);
     
     navigate("/login")
