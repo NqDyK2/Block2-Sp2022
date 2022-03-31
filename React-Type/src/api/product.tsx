@@ -2,7 +2,7 @@ import instance from './instance';
 import { ProductType } from '../types/product';
 import { isAuthenticate } from '../utils/localStorage';
 
-const {token , user } = isAuthenticate();
+const { token , user } = isAuthenticate();
 
 export const list = () => {
     const url = `/products`;
@@ -10,7 +10,11 @@ export const list = () => {
 }
 export const add = (product: any) => {
     const url = `/product/${user._id}`;
-    return instance.post(url, product);
+    return instance.post(url, product,{
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    });
 }
 export const remove = (_id: any) => {
     const url = `/product/${_id}`;

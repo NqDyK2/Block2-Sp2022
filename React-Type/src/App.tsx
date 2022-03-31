@@ -84,7 +84,7 @@ function App() {
             <Route path="/" element={<WebsiteLayout />}>
                 <Route index element={<HomePage />} />
                 <Route path="product">
-                  <Route index element={<ProductPage/>}/>
+                  <Route index  element={<ProductPage/>}/>
                   <Route path=":_id" element={<ProductDetail />} />
                 </Route>
             </Route>
