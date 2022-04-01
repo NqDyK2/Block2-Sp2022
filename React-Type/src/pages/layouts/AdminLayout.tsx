@@ -6,7 +6,7 @@ type Props = {}
 
 const AdminLayout = (props: Props) => {
     return (
-        <div className='bgc-dashboard'>
+        <div className='bgc-dashboard max-w-7xl	m-auto'>
             <header className='mt-0' >
                 
             </header>

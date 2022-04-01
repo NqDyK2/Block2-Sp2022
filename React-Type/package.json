@@ -15,6 +15,7 @@
     "axios": "^0.26.1",
     "flowbite": "^1.4.1",
     "heroicons": "^1.0.6",
+    "pure-react-carousel": "^1.28.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-hook-form": "^7.28.0",
