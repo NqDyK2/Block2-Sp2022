@@ -7,6 +7,7 @@ const HeaderWebsite = (props: Props) => {
     const [showMenu, setShowMenu] = useState(false);
     const [showMenuSm, setShowMenuSm] = useState(false);
     const [search, setSearch] = useState(false);
+    
     return (
         <div className="dark:bg-gray-900">
             <div className="2xl:container 2xl:mx-auto md:py-5 lg:px-20 md:px-6 p-4">

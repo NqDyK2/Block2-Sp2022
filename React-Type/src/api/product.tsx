@@ -8,6 +8,10 @@ export const list = () => {
     const url = `/products`;
     return instance.get(url)
 }
+export const paginate = (page:Number) => {
+    const url = `/product?page=${Number}`
+    return instance.get(url)
+}
 export const add = (product: any) => {
     const url = `/product/${user._id}`;
     return instance.post(url, product,{
@@ -27,4 +31,8 @@ export const read = (_id: any) => {
 export const update = (product: any) => {
     const url = `/product/${product._id}`;
     return instance.patch(url, product);
+}
+export const search = (keyword:String | undefined) => {
+    const url = `/search?q=${keyword}`
+    return instance.post(url)
 }
