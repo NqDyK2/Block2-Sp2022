@@ -12,15 +12,16 @@ import ProductPage from './pages/ProductPage';
 import AdminLayout from './pages/layouts/AdminLayout';
 import WebsiteLayout from './pages/layouts/WebsiteLayout';
 import Dashboard from './pages/Dashboard';
-import ProductManager from './pages/ProductManager';
+import ProductManager from './pages/layouts/layoutsAdmin/Product/ProductManager';
 import ProductDetail from './pages/ProductDetail';
-import ProductAdd from './pages/ProductAdd';
-import ProductEdit from './pages/ProductEdit';
+import ProductAdd from './pages/layouts/layoutsAdmin/Product/ProductAdd';
+import ProductEdit from './pages/layouts/layoutsAdmin/Product/ProductEdit';
 import PrivateRouter from './components/PrivateRouter';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 import { UserType } from './types/user';
 import ProductCategory from './pages/ProductCategory';
+import CategoryManager from './pages/layouts/layoutsAdmin/Category/CategoryManager';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([])
@@ -99,6 +100,9 @@ function App() {
               <Route index element={<PrivateRouter><ProductManager products={products} onRemove={onHandleRemove} /></PrivateRouter>} />
               <Route path=":_id/edit" element={<ProductEdit onUpdate={onHandleUpdate} />} />
               <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
+            </Route>
+            <Route path="category"> 
+              <Route index element={<PrivateRouter><CategoryManager /></PrivateRouter>}/>
             </Route>
           </Route>
           <Route path='login' element={<Signin />}></Route>

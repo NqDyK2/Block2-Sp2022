@@ -15,7 +15,7 @@ const ProductPage = (props: ProductPageProps) => {
   // const {addProducts} = useCart();
   return (
     <div>
-      <div className="mx-auto container px-6 -mt-12 -mb-10 xl:px-0 py-12">
+      <div className="mx-auto container max-w-7xl	 px-6 -mt-12 -mb-10 xl:px-0 py-12">
         <div className="flex flex-col">
           <div className="flex flex-col justify-center">
             <div className="relative">
