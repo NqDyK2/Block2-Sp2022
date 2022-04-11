@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 type Inputs = { // kiểu dữ liệu của từng input
     name: string,
     price: number,
+    desc: string,
   };
   
 type ProductAddProps = {
@@ -23,6 +24,7 @@ const ProductAdd = (props: ProductAddProps) => {
         <form action="" onSubmit={handleSubmit(onSubmit)}>
             <input type="text" {...register('name')} placeholder='Tên sản phẩm' />
             <input type="number"  {...register('price')} placeholder='Giá sản phẩm' />
+            <input type="text" {...register('desc')} placeholder='Mô tả '/>
             <button>Thêm</button>
         </form>
     </div>

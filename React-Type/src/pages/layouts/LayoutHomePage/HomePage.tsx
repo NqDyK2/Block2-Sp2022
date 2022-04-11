@@ -9,7 +9,7 @@ type Props = {}
 
 const HomePage = (props: Props) => {
   return (
-    <div>
+    <div className='max-w-7xl m-auto'>
       <Banner />
       <Highlights />
       <FastNews />

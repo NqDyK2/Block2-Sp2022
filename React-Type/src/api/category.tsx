@@ -4,11 +4,11 @@ import { isAuthenticate } from "../utils/localStorage";
 
 const { token , user} = isAuthenticate();
 
-export const list = () => {
+export const listCate = () => {
     const url = `/categories`;
     return instance.get(url)
 }
-export const create = (category:any) => {
+export const createCate = (category:any) => {
     const url = `/category/${user._id}`;
     return instance.post(url,category, {
         headers: {
@@ -16,15 +16,23 @@ export const create = (category:any) => {
         }
     })
 }
-export const remove = (_id: any) => {
-    const url = `category/${_id}`;
-    return instance.delete(url)
+export const removeCate = (_id: any) => {
+    const url = `category/${user._id}/${_id}`;
+    return instance.delete(url,{
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 }
-export const read = (_id:any) => {
+export const readCate = (_id:any) => {
     const url = `category/${_id}`;
     return instance.get(url);
 }
-export const update = (category:any) => {
-    const url = `/category${category._id}`;
-    return instance.patch(url, category)
+export const updateCate = (category:any) => {
+    const url = `/category/${user._id}/${category._id}`;
+    return instance.patch(url, category , {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    })
 }

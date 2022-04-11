@@ -13,7 +13,7 @@ export const paginate = (page:Number) => {
     return instance.get(url)
 }
 export const add = (product: any) => {
-    const url = `/product/${user._id}`;
+    const url = `/products/${user._id}`;
     return instance.post(url, product,{
         headers: {
             "Authorization": `Bearer ${token}`
@@ -21,8 +21,12 @@ export const add = (product: any) => {
     });
 }
 export const remove = (_id: any) => {
-    const url = `/product/${_id}`;
-    return instance.delete(url);
+    const url = `/product/${user._id}/${_id}`;
+    return instance.delete(url,{
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
 }
 export const read = (_id: any) => {
     const url = `/product/${_id}`;

@@ -5,6 +5,7 @@ import ShowInfo from './components/ShowInfo'
 
 import type { ProductType } from './types/product';
 import { add, list, remove, update } from './api/product';
+import {createCate, listCate, removeCate, updateCate} from './api/category'
 import { login, regis } from './api/user'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/layouts/LayoutHomePage/HomePage';
@@ -22,9 +23,13 @@ import Signup from './pages/Signup';
 import { UserType } from './types/user';
 import ProductCategory from './pages/ProductCategory';
 import CategoryManager from './pages/layouts/layoutsAdmin/Category/CategoryManager';
+import { CategoryType } from './types/category';
+import CategoryEdit from './pages/layouts/layoutsAdmin/Category/CategoryEdit';
+import CategoryAdd from './pages/layouts/layoutsAdmin/Category/CategoryAdd';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([])
+  const [category, setCategory] = useState<CategoryType[]>([])
   const [users, setUser] = useState<UserType[]>([])
 
   useEffect(() => {
@@ -35,31 +40,31 @@ function App() {
     getProducts();
   }, []);
 
+  useEffect(() =>{
+    const getCategory = async () => {
+      const {data} = await listCate();
+      setCategory(data);
+    }
+    getCategory()
+  }, []);
+
   // Add Product
   const onHandleAdd = async (product: any) => {
     const { data } = await add(product);
     setProducts([...products, data]);
   }
-  //Registed Account 
-  const onHanleRegisted = async (user: any) => {
-    const { data } = await regis(user);
-    // setUser([...users, data])
-    console.log(user);
-
+  const onHandleAddCate = async (category: any) => {
+    const { data } = await createCate(category);
+    setCategory([...category, data])
   }
-  //Login Account 
-
-
-  const onHandleLogin = async (user: any) => {
-    const { data } = await login(user);
-    console.log(user);
-  }
-
-
   const onHandleRemove = async (_id: number) => {
     remove(_id);
     // rerender
     setProducts(products.filter(item => item._id !== _id));
+  }
+  const onHandleRemoveCategory = async (_id:number) => {
+    removeCate(_id);
+    setCategory(category.filter(item => item._id !== _id));
   }
   const onHandleUpdate = async (product: ProductType) => {
     try {
@@ -72,6 +77,14 @@ function App() {
 
     }
   }
+  const onHandleUpdateCategory = async (category: CategoryType) => {
+    // try {
+    //   const {data} = await updateCate(category);
+    //   setCategory(category.map(item => item._id === data._id ? category: item))
+    // } catch (error) {
+      
+    // }
+  } 
   return (
     <div className="App">
       {/* <header>
@@ -102,7 +115,9 @@ function App() {
               <Route path="add" element={<ProductAdd onAdd={onHandleAdd} />} />
             </Route>
             <Route path="category"> 
-              <Route index element={<PrivateRouter><CategoryManager /></PrivateRouter>}/>
+              <Route index element={<PrivateRouter><CategoryManager onRemove={onHandleRemoveCategory} category={category}/></PrivateRouter>}/>
+              <Route path=':_id/edit' element={<CategoryEdit onUpdateCate={onHandleUpdateCategory}/>}/>
+              <Route path="add" element={<CategoryAdd onAdd={onHandleAddCate} />} />
             </Route>
           </Route>
           <Route path='login' element={<Signin />}></Route>
