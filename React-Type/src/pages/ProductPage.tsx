@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { ProductType } from '../types/product';
 import { Link } from 'react-router-dom'
 import {useCart} from 'react-use-cart'
+import { paginate } from '../api/product';
 
 
 type ProductPageProps = {
@@ -13,6 +14,22 @@ type ProductPageProps = {
 const ProductPage = (props: ProductPageProps) => {
   // console.log(props.products);
   // const {addProducts} = useCart();
+  const [product, setProduct] = useState<ProductType[]>([])
+  const [page , setPage] = useState(0)
+  const [totalP, setTotalPage] = useState(0)
+  useEffect(() => {
+    const getPagiProducts = async () => {
+      const { data } = await paginate(page);
+      setProduct(data.product);
+      setTotalPage(data.totalPages);
+      console.log(data);
+    }
+    getPagiProducts();
+  },[page])
+  const onChangePage = (index:any) => {
+      setPage(index)
+
+  }
   return (
     <div>
       <div className="mx-auto container max-w-7xl	 px-6 -mt-12 -mb-10 xl:px-0 py-12">
@@ -29,7 +46,7 @@ const ProductPage = (props: ProductPageProps) => {
 
 
           <div className="mt-10 grid lg:grid-cols-2 gap-x-8 gap-y-8 items-center">
-            {props.products.map((item, index) => (
+            {product.map((item, index) => (
 
               <div className="group group-hover:bg-opacity-60 transition duration-500 relative bg-gray-50 sm:p-28 py-36 px-10 flex justify-center items-center">
                 <a>
@@ -88,9 +105,12 @@ const ProductPage = (props: ProductPageProps) => {
         </div>
         <div className="flex justify-center items-end mt-12">
           <div className="flex flex-row items-center justify-center space-x-8">
-            <button className="text-base leading-none text-gray-800 border-b-2 border-transparent focus:outline-none focus:border-gray-800">
-              <p>1</p>
+            {[...Array(totalP).keys()].map((item, index) => (
+            <button onClick ={() => onChangePage(index)} className="text-base leading-none text-gray-800 border-b-2 border-transparent focus:outline-none focus:border-gray-800">
+              <p>{item+1}</p>
             </button>
+            ))}
+            {/* 
             <button className="text-base leading-none text-gray-800 border-b-2 border-transparent focus:outline-none focus:border-gray-800">
               <p>2</p>
             </button>
@@ -101,7 +121,7 @@ const ProductPage = (props: ProductPageProps) => {
               <svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 6L15 12L9 18" stroke="#1F2937" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
