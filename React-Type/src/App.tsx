@@ -7,7 +7,7 @@ import type { ProductType } from './types/product';
 import { add, list, remove, update } from './api/product';
 import {createCate, listCate, removeCate, updateCate} from './api/category'
 import { login, regis } from './api/user'
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes, useParams } from 'react-router-dom';
 import HomePage from './pages/layouts/LayoutHomePage/HomePage';
 import ProductPage from './pages/ProductPage';
 import AdminLayout from './pages/layouts/AdminLayout';
@@ -26,6 +26,8 @@ import CategoryManager from './pages/layouts/layoutsAdmin/Category/CategoryManag
 import { CategoryType } from './types/category';
 import CategoryEdit from './pages/layouts/layoutsAdmin/Category/CategoryEdit';
 import CategoryAdd from './pages/layouts/layoutsAdmin/Category/CategoryAdd';
+import Cart from './pages/CheckOutPage';
+import CheckOutPage from './pages/CheckOutPage';
 
 function App() {
   const [products, setProducts] = useState<ProductType[]>([])
@@ -122,6 +124,7 @@ function App() {
           </Route>
           <Route path='login' element={<Signin />}></Route>
           <Route path='register' element={<Signup />} />
+          <Route path='checkout' element={<CheckOutPage />} />
         </Routes>
       </main>
     </div>

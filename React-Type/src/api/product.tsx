@@ -30,8 +30,12 @@ export const read = (_id: any) => {
     return instance.get(url);
 }
 export const update = (product: any) => {
-    const url = `/product/${product._id}`;
-    return instance.patch(url, product);
+    const url = `/product/${user._id}/${product._id}`;
+    return instance.patch(url, product,{
+        headers:{
+            "Authorization": `Bearer ${token}`
+        }
+    });
 }
 export const searchFullText = (keyword:any) => {
     const url = `/search?q=${keyword}`

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import "pure-react-carousel/dist/react-carousel.es.css";
 import { ProductType } from '../types/product';
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import {useCart} from 'react-use-cart'
-import { paginate } from '../api/product';
+import { paginate, searchFullText } from '../api/product';
 
 
 type ProductPageProps = {
@@ -17,12 +17,22 @@ const ProductPage = (props: ProductPageProps) => {
   const [product, setProduct] = useState<ProductType[]>([])
   const [page , setPage] = useState(0)
   const [totalP, setTotalPage] = useState(0)
+  const [productSearch, setProductSearch] = useState()
+  const {keyword} = useParams();
+  console.log(keyword);
   useEffect(() => {
     const getPagiProducts = async () => {
       const { data } = await paginate(page);
       setProduct(data.product);
       setTotalPage(data.totalPages);
       console.log(data);
+      if(keyword){
+        const getProductSearch = async () => {
+          const {dataSearch} = await searchFullText(keyword)
+          setProductSearch(dataSearch)
+        }
+        getProductSearch();
+      }
     }
     getPagiProducts();
   },[page])

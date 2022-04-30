@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { searchFullText } from '../../api/product';
 
 type Props = {}
 
@@ -7,7 +8,18 @@ const HeaderWebsite = (props: Props) => {
     const [showMenu, setShowMenu] = useState(false);
     const [showMenuSm, setShowMenuSm] = useState(false);
     const [search, setSearch] = useState(false);
-    
+    const [show, setShow] = useState(false);
+    const [keyword, setKeyWord] = useState('');
+    const changeKeyword = (key:any) => {
+        setKeyWord(key.target.value)
+        console.log(keyword);
+    }
+    const Navigate =  useNavigate()
+    const changePage = (e:any) => {
+        e.preventDefault();
+        Navigate(`/product?q=${keyword}`)
+    }
+
     return (
         <div className="dark:bg-gray-900">
             <div className="2xl:container 2xl:mx-auto md:py-5 lg:px-20 md:px-6 p-4">
@@ -20,7 +32,9 @@ const HeaderWebsite = (props: Props) => {
                                     <path d="M19.0004 19.0004L14.6504 14.6504" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
-                            <input type="text" placeholder="Search for products" className="bg-transparent text-sm text-gray-600 focus:outline-none" />
+                            <form onSubmit={changePage}>
+                                <input type="text" onChange={changeKeyword} placeholder="Search for products" className="bg-transparent text-sm text-gray-600 focus:outline-none" />
+                            </form>
                         </div>
                         <button onClick={() => setShowMenu(true)} aria-label="Open Menu" className="text-gray-800 dark:text-white hidden md:block lg:hidden focus:outline-none focus:ring-2 focus:ring-gray-800 rounded">
                             <svg className="fill-stroke" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +43,7 @@ const HeaderWebsite = (props: Props) => {
                                 <path d="M18 6L4 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </button>
-                        <button onClick={() => setSearch(true)} aria-label="Search Menu" className="text-gray-800 dark:text-white md:hidden focus:outline-none focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                        <button onClick={() => setSearch(true)}  aria-label="Search Menu" className="text-gray-800 dark:text-white md:hidden focus:outline-none focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
                             <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                                 <path d="M18.9984 19.0004L14.6484 14.6504" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
@@ -76,9 +90,9 @@ const HeaderWebsite = (props: Props) => {
                                     </Link>
                                 </li>
                                 <li>
-                                        <a className="dark:text-white dark:hover:text-gray-300 text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Blog
-                                        </a>
+                                    <a className="dark:text-white dark:hover:text-gray-300 text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Blog
+                                    </a>
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="dark:text-white dark:hover:text-gray-300 text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
@@ -100,102 +114,170 @@ const HeaderWebsite = (props: Props) => {
                                 />
                             </svg>
                         </a>
-                        <a aria-label="Shopping bag" className="hidden md:block focus:outline-none text-gray-800 dark:text-white focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5" href="javascript:void(0)">
+                        <a aria-label="Shopping bag" onClick={() => setShow(!show)} className="hidden md:block focus:outline-none text-gray-800 dark:text-white focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5" href="javascript:void(0)">
                             <svg className="fill-stroke" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M7.5 8.25V6.75C7.5 5.55653 7.97411 4.41193 8.81802 3.56802C9.66193 2.72411 10.8065 2.25 12 2.25V2.25C13.1935 2.25 14.3381 2.72411 15.182 3.56802C16.0259 4.41193 16.5 5.55653 16.5 6.75V8.25M3.75 8.25C3.55109 8.25 3.36032 8.32902 3.21967 8.46967C3.07902 8.61032 3 8.80109 3 9V19.125C3 20.5425 4.2075 21.75 5.625 21.75H18.375C19.7925 21.75 21 20.6011 21 19.1836V9C21 8.80109 20.921 8.61032 20.7803 8.46967C20.6397 8.32902 20.4489 8.25 20.25 8.25H3.75Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                                 <path d="M7.5 10.5V11.25C7.5 12.4435 7.97411 13.5881 8.81802 14.432C9.66193 15.2759 10.8065 15.75 12 15.75C13.1935 15.75 14.3381 15.2759 15.182 14.432C16.0259 13.5881 16.5 12.4435 16.5 11.25V10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                         </a>
-                        <button onClick={() => setShowMenuSm(true)} aria-label="open menu" className="text-gray-800 dark:text-white md:hidden focus:outline-none focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                            <svg className="fill-stroke" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4 6H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M10 12H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M6 18H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div id="md-menu" className={`${showMenu ? "md:block" : ""} hidden lg:hidden absolute z-10 inset-0 h-screen w-full dark:bg-gray-800 bg-gray-800 bg-opacity-70 dark:bg-opacity-70`}>
-                    <div className="relative w-full h-screen">
-                        <div className="absolute inset-0 w-1/2 bg-white dark:bg-gray-900 p-6 justify-center">
-                            <div className="flex items-center justify-between border-b pb-4 border-gray-200 dark:border-gray-700">
-                                <div className="flex items-center space-x-3 mx-2">
-                                    <div>
-                                        <svg className="fill-stroke text-gray-800 dark:text-white" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M18.9984 19.0004L14.6484 14.6504" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
+                        {show && (
+                            <div className="w-full h-full bg-black bg-opacity-90 top-0 overflow-y-auto overflow-x-hidden fixed sticky-0" id="chec-div">
+                                <div className="w-full absolute z-10 right-0 h-full overflow-x-hidden transform translate-x-0 transition ease-in-out duration-700" id="checkout">
+                                    <div className="flex md:flex-row flex-col justify-end" id="cart">
+                                        <div className="lg:w-1/2 w-full md:pl-10 pl-4 pr-10 md:pr-4 md:py-12 py-8 bg-white overflow-y-auto overflow-x-hidden h-screen" id="scroll">
+                                            <div className="flex items-center text-gray-500 hover:text-gray-600 cursor-pointer" onClick={() => setShow(!show)}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-left" width={16} height={16} viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                    <polyline points="15 6 9 12 15 18" />
+                                                </svg>
+                                                <p className="text-sm pl-2 leading-none">Back</p>
+                                            </div>
+                                            <p className="text-5xl font-black leading-10 text-gray-800 pt-3">Bag</p>
+                                            <div className="md:flex items-center mt-14 py-8 border-t border-gray-200">
+                                                <div className="w-1/4">
+                                                    <img src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller3.png" alt="" className="w-full h-full object-center object-cover" />
+                                                </div>
+                                                <div className="md:pl-3 md:w-3/4">
+                                                    <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">RF293</p>
+                                                    <div className="flex items-center justify-between w-full pt-1">
+                                                        <p className="text-base font-black leading-none text-gray-800">North wolf bag</p>
+                                                        <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none">
+                                                            <option>01</option>
+                                                            <option>02</option>
+                                                            <option>03</option>
+                                                        </select>
+                                                    </div>
+                                                    <p className="text-xs leading-3 text-gray-600 pt-2">Height: 10 inches</p>
+                                                    <p className="text-xs leading-3 text-gray-600 py-4">Color: Black</p>
+                                                    <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
+                                                    <div className="flex items-center justify-between pt-5 pr-6">
+                                                        <div className="flex itemms-center">
+                                                            <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                            <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
+                                                        </div>
+                                                        <p className="text-base font-black leading-none text-gray-800">$9,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="md:flex items-center py-8 border-t border-gray-200">
+                                                <div className="w-1/4">
+                                                    <img src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller2.png" alt="" className="w-full h-full object-center object-cover" />
+                                                </div>
+                                                <div className="md:pl-3 md:w-3/4 w-full">
+                                                    <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">RF293</p>
+                                                    <div className="flex items-center justify-between w-full pt-1">
+                                                        <p className="text-base font-black leading-none text-gray-800">Luxe Signature Ring</p>
+                                                        <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none">
+                                                            <option>01</option>
+                                                            <option>02</option>
+                                                            <option>03</option>
+                                                        </select>
+                                                    </div>
+                                                    <p className="text-xs leading-3 text-gray-600 pt-2">Height: 10 inches</p>
+                                                    <p className="text-xs leading-3 text-gray-600 py-4">Color: Black</p>
+                                                    <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
+                                                    <div className="flex items-center justify-between pt-5 pr-6">
+                                                        <div className="flex itemms-center">
+                                                            <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                            <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
+                                                        </div>
+                                                        <p className="text-base font-black leading-none text-gray-800">$9,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="md:flex items-center py-8 border-t border-b border-gray-200">
+                                                <div className="h-full w-1/4">
+                                                    <img src="https://cdn.tuk.dev/assets/templates/e-commerce-kit/bestSeller1.png" alt="" className="w-full h-full object-center object-cover" />
+                                                </div>
+                                                <div className="md:pl-3 md:w-3/4 w-full">
+                                                    <p className="text-xs leading-3 text-gray-800 md:pt-0 pt-4">RF293</p>
+                                                    <div className="flex items-center justify-between w-full pt-1">
+                                                        <p className="text-base font-black leading-none text-gray-800">Luxe Signature Shoes</p>
+                                                        <select className="py-2 px-1 border border-gray-200 mr-6 focus:outline-none">
+                                                            <option>01</option>
+                                                            <option>02</option>
+                                                            <option>03</option>
+                                                        </select>
+                                                    </div>
+                                                    <p className="text-xs leading-3 text-gray-600 pt-2">Height: 10 inches</p>
+                                                    <p className="text-xs leading-3 text-gray-600 py-4">Color: Black</p>
+                                                    <p className="w-96 text-xs leading-3 text-gray-600">Composition: 100% calf leather</p>
+                                                    <div className="flex items-center justify-between pt-5 pr-6">
+                                                        <div className="flex itemms-center">
+                                                            <p className="text-xs leading-3 underline text-gray-800 cursor-pointer">Add to favorites</p>
+                                                            <p className="text-xs leading-3 underline text-red-500 pl-5 cursor-pointer">Remove</p>
+                                                        </div>
+                                                        <p className="text-base font-black leading-none text-gray-800">$9,000</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="xl:w-1/2 md:w-1/3 xl:w-1/4 w-full bg-gray-100 h-full">
+                                            <div className="flex flex-col md:h-screen px-14 py-20 justify-between overflow-y-auto">
+                                                <div>
+                                                    <p className="text-4xl font-black leading-9 text-gray-800">Summary</p>
+                                                    <div className="flex items-center justify-between pt-16">
+                                                        <p className="text-base leading-none text-gray-800">Subtotal</p>
+                                                        <p className="text-base leading-none text-gray-800">$9,000</p>
+                                                    </div>
+                                                    <div className="flex items-center justify-between pt-5">
+                                                        <p className="text-base leading-none text-gray-800">Shipping</p>
+                                                        <p className="text-base leading-none text-gray-800">$30</p>
+                                                    </div>
+                                                    <div className="flex items-center justify-between pt-5">
+                                                        <p className="text-base leading-none text-gray-800">Tax</p>
+                                                        <p className="text-base leading-none text-gray-800">$35</p>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="flex items-center pb-6 justify-between lg:pt-5 pt-20">
+                                                        <p className="text-2xl leading-normal text-gray-800">Total</p>
+                                                        <p className="text-2xl font-bold leading-normal text-right text-gray-800">$10,240</p>
+                                                    </div>
+                                                    <Link to={"/checkout"}>
+                                                        <button className="text-base leading-none w-full py-5 bg-gray-800 border-gray-800 border focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 text-white">
+                                                            Checkout
+                                                        </button>
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="text" placeholder="Search for products" className="text-sm text-gray-600 dark:text-gray-300 focus:outline-none bg-transparent" />
                                 </div>
-                                <button onClick={() => setShowMenu(false)} aria-label="close menu" className="focus:outline-none focus:ring-2 focus:ring-gray-800">
-                                    <svg className="fill-stroke text-gray-800 dark:text-white" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 4L4 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-                                        <path d="M4 4L12 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
                             </div>
-                            <div className="mt-8">
-                                <ul className="flex flex-col space-y-8">
-                                    <li className="flex items-center justify-between">
-                                        <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Home
-                                        </a>
-                                        <button className="fill-stroke text-black dark:text-white" aria-label="show options">
-                                            <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </li>
-                                    <li className="flex items-center justify-between">
-                                        <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Catalog
-                                        </a>
-                                        <button className="fill-stroke text-black dark:text-white" aria-label="show options">
-                                            <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </li>
-                                    <li className="flex items-center justify-between">
-                                        <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Pages
-                                        </a>
-                                        <button className="fill-stroke text-black dark:text-white" aria-label="show options">
-                                            <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </li>
-                                    <li className="flex items-center justify-between">
-                                        <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Blog
-                                        </a>
-                                        <button className="fill-stroke text-black dark:text-white" aria-label="show options">
-                                            <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </li>
-                                    <li className="flex items-center justify-between">
-                                        <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                            Contact us
-                                        </a>
-                                        <button className="fill-stroke text-black dark:text-white" aria-label="show options">
-                                            <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                        )}
                     </div>
+
+                    <style>
+                        {` /* width */
+                #scroll::-webkit-scrollbar {
+                    width: 1px;
+                }
+
+                /* Track */
+                #scroll::-webkit-scrollbar-track {
+                    background: #f1f1f1;
+                }
+
+                /* Handle */
+                #scroll::-webkit-scrollbar-thumb {
+                    background: rgb(133, 132, 132);
+                }
+`}
+                    </style>
+                    <button onClick={() => setShowMenuSm(true)} aria-label="open menu" className="text-gray-800 dark:text-white md:hidden focus:outline-none focus:ring-2 focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                        <svg className="fill-stroke" width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 6H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M10 12H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                            <path d="M6 18H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
                 </div>
-                {/* Search menu */}
-                <div id="mobile-search-menu" className={`${search ? "flex" : "hidden"} md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white dark:bg-gray-900 pt-4`}>
-                    <div className="w-full">
-                        <div className="flex items-center justify-between border-b border-gray-200 pb-3 mx-4">
+            </div>
+            <div id="md-menu" className={`${showMenu ? "md:block" : ""} hidden lg:hidden absolute z-10 inset-0 h-screen w-full dark:bg-gray-800 bg-gray-800 bg-opacity-70 dark:bg-opacity-70`}>
+                <div className="relative w-full h-screen">
+                    <div className="absolute inset-0 w-1/2 bg-white dark:bg-gray-900 p-6 justify-center">
+                        <div className="flex items-center justify-between border-b pb-4 border-gray-200 dark:border-gray-700">
                             <div className="flex items-center space-x-3 mx-2">
                                 <div>
                                     <svg className="fill-stroke text-gray-800 dark:text-white" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -203,196 +285,272 @@ const HeaderWebsite = (props: Props) => {
                                         <path d="M18.9984 19.0004L14.6484 14.6504" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </div>
-                                <input type="text" placeholder="Search for products" className="text-sm text-gray-600 focus:outline-none bg-transparent" />
+                                <input type="text" placeholder="Search for products" className="text-sm text-gray-600 dark:text-gray-300 focus:outline-none bg-transparent" />
                             </div>
-                            <button aria-label="close menu" onClick={() => setSearch(false)} className="text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800">
-                                <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 5L5 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M5 5L15 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                            <button onClick={() => setShowMenu(false)} aria-label="close menu" className="focus:outline-none focus:ring-2 focus:ring-gray-800">
+                                <svg className="fill-stroke text-gray-800 dark:text-white" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 4L4 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M4 4L12 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </button>
                         </div>
-                    </div>
-                    <div className="mt-8 mx-4">
-                        <h2 className="text-sm text-gray-600 dark:text-gray-300 uppercase">Suggestions</h2>
-                        <ul className="mt-6 flex flex-col space-y-6">
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Bags
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Shoes
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Capes
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Coats
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Denim 2021
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Leather shoe collection 2021
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Active wear
-                                </a>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Sweat suits
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="w-full h-full flex items-end">
-                        <ul className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
-                            <li>
-                                <a className="flex items-center space-x-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
-                                    <div>
-                                        <svg className="fill-stroke" width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.33333 1L1 5V19C1 19.5304 1.23413 20.0391 1.65087 20.4142C2.06762 20.7893 2.63285 21 3.22222 21H18.7778C19.3671 21 19.9324 20.7893 20.3491 20.4142C20.7659 20.0391 21 19.5304 21 19V5L17.6667 1H4.33333Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M1 5H21" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M15.4436 9C15.4436 10.0609 14.9753 11.0783 14.1418 11.8284C13.3083 12.5786 12.1779 13 10.9991 13C9.82039 13 8.68993 12.5786 7.85643 11.8284C7.02294 11.0783 6.55469 10.0609 6.55469 9" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                        <div className="mt-8">
+                            <ul className="flex flex-col space-y-8">
+                                <li className="flex items-center justify-between">
+                                    <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Home
+                                    </a>
+                                    <button className="fill-stroke text-black dark:text-white" aria-label="show options">
+                                        <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                    </div>
-                                    <p className="text-base">Cart</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a className="flex items-center space-x-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
-                                    <div>
-                                        <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M17.3651 3.84172C16.9395 3.41589 16.4342 3.0781 15.8779 2.84763C15.3217 2.61716 14.7255 2.49854 14.1235 2.49854C13.5214 2.49854 12.9252 2.61716 12.369 2.84763C11.8128 3.0781 11.3074 3.41589 10.8818 3.84172L9.99847 4.72506L9.11514 3.84172C8.25539 2.98198 7.08933 2.49898 5.87347 2.49898C4.65761 2.49898 3.49155 2.98198 2.6318 3.84172C1.77206 4.70147 1.28906 5.86753 1.28906 7.08339C1.28906 8.29925 1.77206 9.46531 2.6318 10.3251L3.51514 11.2084L9.99847 17.6917L16.4818 11.2084L17.3651 10.3251C17.791 9.89943 18.1288 9.39407 18.3592 8.83785C18.5897 8.28164 18.7083 7.68546 18.7083 7.08339C18.7083 6.48132 18.5897 5.88514 18.3592 5.32893C18.1288 4.77271 17.791 4.26735 17.3651 3.84172V3.84172Z"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
+                                    </button>
+                                </li>
+                                <li className="flex items-center justify-between">
+                                    <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Catalog
+                                    </a>
+                                    <button className="fill-stroke text-black dark:text-white" aria-label="show options">
+                                        <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                    </div>
-                                    <p className="text-base">Wishlist</p>
-                                </a>
-                            </li>
-                        </ul>
+                                    </button>
+                                </li>
+                                <li className="flex items-center justify-between">
+                                    <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Pages
+                                    </a>
+                                    <button className="fill-stroke text-black dark:text-white" aria-label="show options">
+                                        <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li className="flex items-center justify-between">
+                                    <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Blog
+                                    </a>
+                                    <button className="fill-stroke text-black dark:text-white" aria-label="show options">
+                                        <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                </li>
+                                <li className="flex items-center justify-between">
+                                    <a href="javascript:void(0)" className="dark:text-white text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                        Contact us
+                                    </a>
+                                    <button className="fill-stroke text-black dark:text-white" aria-label="show options">
+                                        <svg width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                        </svg>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                {/* Main Menu */}
-                <div id="mobile-menu" className={`${showMenuSm ? "flex" : "hidden"} md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white pt-4`}>
-                    <div className="w-full">
-                        <div className="flex items-center justify-between border-b border-gray-200 pb-4 mx-4">
-                            <div />
+            </div>
+            {/* Search menu */}
+            <div id="mobile-search-menu" className={`${search ? "flex" : "hidden"} md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white dark:bg-gray-900 pt-4`}>
+                <div className="w-full">
+                    <div className="flex items-center justify-between border-b border-gray-200 pb-3 mx-4">
+                        <div className="flex items-center space-x-3 mx-2">
                             <div>
-                                <p className="text-base font-semibold text-gray-800">Menu</p>
+                                <svg className="fill-stroke text-gray-800 dark:text-white" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M18.9984 19.0004L14.6484 14.6504" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
                             </div>
-                            <button aria-label="close menu" onClick={() => setShowMenuSm(false)} className="text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800">
-                                <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15 5L5 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M5 5L15 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                            <input type="text" placeholder="Search for products" className="text-sm text-gray-600 focus:outline-none bg-transparent" />
+                        </div>
+                        <button aria-label="close menu" onClick={() => setSearch(false)} className="text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800">
+                            <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 5L5 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M5 5L15 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div className="mt-8 mx-4">
+                    <h2 className="text-sm text-gray-600 dark:text-gray-300 uppercase">Suggestions</h2>
+                    <ul className="mt-6 flex flex-col space-y-6">
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Bags
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Shoes
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Capes
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Coats
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Denim 2021
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Leather shoe collection 2021
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Active wear
+                            </a>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-sm text-gray-600 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Sweat suits
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div className="w-full h-full flex items-end">
+                    <ul className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
+                        <li>
+                            <a className="flex items-center space-x-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
+                                <div>
+                                    <svg className="fill-stroke" width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.33333 1L1 5V19C1 19.5304 1.23413 20.0391 1.65087 20.4142C2.06762 20.7893 2.63285 21 3.22222 21H18.7778C19.3671 21 19.9324 20.7893 20.3491 20.4142C20.7659 20.0391 21 19.5304 21 19V5L17.6667 1H4.33333Z" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M1 5H21" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15.4436 9C15.4436 10.0609 14.9753 11.0783 14.1418 11.8284C13.3083 12.5786 12.1779 13 10.9991 13C9.82039 13 8.68993 12.5786 7.85643 11.8284C7.02294 11.0783 6.55469 10.0609 6.55469 9" stroke="currentColor" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </div>
+                                <p className="text-base">Cart</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="flex items-center space-x-2 text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
+                                <div>
+                                    <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M17.3651 3.84172C16.9395 3.41589 16.4342 3.0781 15.8779 2.84763C15.3217 2.61716 14.7255 2.49854 14.1235 2.49854C13.5214 2.49854 12.9252 2.61716 12.369 2.84763C11.8128 3.0781 11.3074 3.41589 10.8818 3.84172L9.99847 4.72506L9.11514 3.84172C8.25539 2.98198 7.08933 2.49898 5.87347 2.49898C4.65761 2.49898 3.49155 2.98198 2.6318 3.84172C1.77206 4.70147 1.28906 5.86753 1.28906 7.08339C1.28906 8.29925 1.77206 9.46531 2.6318 10.3251L3.51514 11.2084L9.99847 17.6917L16.4818 11.2084L17.3651 10.3251C17.791 9.89943 18.1288 9.39407 18.3592 8.83785C18.5897 8.28164 18.7083 7.68546 18.7083 7.08339C18.7083 6.48132 18.5897 5.88514 18.3592 5.32893C18.1288 4.77271 17.791 4.26735 17.3651 3.84172V3.84172Z"
+                                            stroke="currentColor"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </div>
+                                <p className="text-base">Wishlist</p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {/* Main Menu */}
+            <div id="mobile-menu" className={`${showMenuSm ? "flex" : "hidden"} md:hidden absolute inset-0 z-10 flex-col w-full h-screen bg-white pt-4`}>
+                <div className="w-full">
+                    <div className="flex items-center justify-between border-b border-gray-200 pb-4 mx-4">
+                        <div />
+                        <div>
+                            <p className="text-base font-semibold text-gray-800">Menu</p>
+                        </div>
+                        <button aria-label="close menu" onClick={() => setShowMenuSm(false)} className="text-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-gray-800">
+                            <svg className="fill-stroke" width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 5L5 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                                <path d="M5 5L15 15" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div className="mt-6 mx-4">
+                    <ul className="flex flex-col space-y-8">
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Home
+                            </a>
+                            <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                                <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </button>
-                        </div>
-                    </div>
-                    <div className="mt-6 mx-4">
-                        <ul className="flex flex-col space-y-8">
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Home
-                                </a>
-                                <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                                    <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Catalog
+                            </a>
+                            <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                                <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Pages
+                            </a>
+                            <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                                <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Blog
+                            </a>
+                            <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                                <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </li>
+                        <li className="flex items-center justify-between">
+                            <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
+                                Contact us
+                            </a>
+                            <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
+                                <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div className="w-full h-full flex items-end">
+                    <ul className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
+                        <li>
+                            <a className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
+                                <div>
+                                    <svg width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M4.33333 1L1 5V19C1 19.5304 1.23413 20.0391 1.65087 20.4142C2.06762 20.7893 2.63285 21 3.22222 21H18.7778C19.3671 21 19.9324 20.7893 20.3491 20.4142C20.7659 20.0391 21 19.5304 21 19V5L17.6667 1H4.33333Z" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M1 5H21" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M15.4436 9C15.4436 10.0609 14.9753 11.0783 14.1418 11.8284C13.3083 12.5786 12.1779 13 10.9991 13C9.82039 13 8.68993 12.5786 7.85643 11.8284C7.02294 11.0783 6.55469 10.0609 6.55469 9" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
-                                </button>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Catalog
-                                </a>
-                                <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                                    <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
+                                </div>
+                                <p className="text-base text-gray-800">Cart</p>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
+                                <div>
+                                    <svg width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M17.3651 3.84172C16.9395 3.41589 16.4342 3.0781 15.8779 2.84763C15.3217 2.61716 14.7255 2.49854 14.1235 2.49854C13.5214 2.49854 12.9252 2.61716 12.369 2.84763C11.8128 3.0781 11.3074 3.41589 10.8818 3.84172L9.99847 4.72506L9.11514 3.84172C8.25539 2.98198 7.08933 2.49898 5.87347 2.49898C4.65761 2.49898 3.49155 2.98198 2.6318 3.84172C1.77206 4.70147 1.28906 5.86753 1.28906 7.08339C1.28906 8.29925 1.77206 9.46531 2.6318 10.3251L3.51514 11.2084L9.99847 17.6917L16.4818 11.2084L17.3651 10.3251C17.791 9.89943 18.1288 9.39407 18.3592 8.83785C18.5897 8.28164 18.7083 7.68546 18.7083 7.08339C18.7083 6.48132 18.5897 5.88514 18.3592 5.32893C18.1288 4.77271 17.791 4.26735 17.3651 3.84172V3.84172Z"
+                                            stroke="#1F2937"
+                                            strokeWidth="1.5"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
                                     </svg>
-                                </button>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Pages
-                                </a>
-                                <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                                    <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Blog
-                                </a>
-                                <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                                    <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </li>
-                            <li className="flex items-center justify-between">
-                                <a href="javascript:void(0)" className="text-base text-gray-800 focus:outline-none dark:text-white focus:ring-2 focus:ring-gray-800 hover:underline">
-                                    Contact us
-                                </a>
-                                <button className="focus:outline-none focus:ring-2 text-black dark:text-white focus:ring-gray-800 rounded hover:bg-gray-100 p-0.5">
-                                    <svg className="fill-stroke" width={16} height={16} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M12 6L8 10L4 6" stroke="currentColor" strokeWidth="0.75" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="w-full h-full flex items-end">
-                        <ul className="bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col space-y-8 w-full">
-                            <li>
-                                <a className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
-                                    <div>
-                                        <svg width={22} height={22} viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M4.33333 1L1 5V19C1 19.5304 1.23413 20.0391 1.65087 20.4142C2.06762 20.7893 2.63285 21 3.22222 21H18.7778C19.3671 21 19.9324 20.7893 20.3491 20.4142C20.7659 20.0391 21 19.5304 21 19V5L17.6667 1H4.33333Z" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M1 5H21" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                            <path d="M15.4436 9C15.4436 10.0609 14.9753 11.0783 14.1418 11.8284C13.3083 12.5786 12.1779 13 10.9991 13C9.82039 13 8.68993 12.5786 7.85643 11.8284C7.02294 11.0783 6.55469 10.0609 6.55469 9" stroke="#1F2937" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                    </div>
-                                    <p className="text-base text-gray-800">Cart</p>
-                                </a>
-                            </li>
-                            <li>
-                                <a className="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-gray-800 hover:underline" href="javascript:void(0)">
-                                    <div>
-                                        <svg width={20} height={20} viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M17.3651 3.84172C16.9395 3.41589 16.4342 3.0781 15.8779 2.84763C15.3217 2.61716 14.7255 2.49854 14.1235 2.49854C13.5214 2.49854 12.9252 2.61716 12.369 2.84763C11.8128 3.0781 11.3074 3.41589 10.8818 3.84172L9.99847 4.72506L9.11514 3.84172C8.25539 2.98198 7.08933 2.49898 5.87347 2.49898C4.65761 2.49898 3.49155 2.98198 2.6318 3.84172C1.77206 4.70147 1.28906 5.86753 1.28906 7.08339C1.28906 8.29925 1.77206 9.46531 2.6318 10.3251L3.51514 11.2084L9.99847 17.6917L16.4818 11.2084L17.3651 10.3251C17.791 9.89943 18.1288 9.39407 18.3592 8.83785C18.5897 8.28164 18.7083 7.68546 18.7083 7.08339C18.7083 6.48132 18.5897 5.88514 18.3592 5.32893C18.1288 4.77271 17.791 4.26735 17.3651 3.84172V3.84172Z"
-                                                stroke="#1F2937"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <p className="text-base text-gray-800">Wishlist</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                                </div>
+                                <p className="text-base text-gray-800">Wishlist</p>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
